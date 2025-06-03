@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgamdwdlcwo4c"]
+
+[ext_resource type="Script" path="res://unit/enemies/spawner.gd" id="1_87q1l"]
+
+[node name="Spawner" type="Polygon2D"]
+color = Color(0, 1, 1, 0.392157)
+polygon = PackedVector2Array(0, 0, 0, -32, 1280, -31, 1280, 0)
+script = ExtResource("1_87q1l")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

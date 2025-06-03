@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkrl3u8l5w70v"]
+
+[ext_resource type="Script" uid="uid://blprd1oh6rb2w" path="res://shootemup/units/enemies/ais/approach_ai.gd" id="1_gv777"]
+
+[node name="ApproachAI" type="Node2D"]
+script = ExtResource("1_gv777")
+approach_speed = 0.2

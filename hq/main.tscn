@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfd0luld465js"]
+
+[ext_resource type="Script" uid="uid://chee7vycqd158" path="res://hq/main.gd" id="1_c18f8"]
+[ext_resource type="FontFile" uid="uid://rok3l0s3axtu" path="res://fonts/ka1.ttf" id="1_qfnwy"]
+
+[sub_resource type="GDScript" id="GDScript_ri5ur"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	pass
+
+func _on_run_button_pressed():
+	pass
+"
+
+[node name="Main" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_c18f8")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -29.0
+offset_right = 46.5
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RunButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../HangarButton")
+theme_override_fonts/font = ExtResource("1_qfnwy")
+text = "Run"
+script = SubResource("GDScript_ri5ur")
+
+[node name="HangarButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../RunButton")
+theme_override_fonts/font = ExtResource("1_qfnwy")
+text = "Hangar"
+script = SubResource("GDScript_ri5ur")
+
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/RunButton" to="." method="_on_run_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/HangarButton" to="." method="_on_hangar_button_pressed"]

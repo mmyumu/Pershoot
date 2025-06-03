@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqix2mq4in2tu"]
+
+[ext_resource type="Script" uid="uid://cacrvw54qy72d" path="res://new_character/main.gd" id="1_n2c0l"]
+[ext_resource type="FontFile" uid="uid://rok3l0s3axtu" path="res://fonts/ka1.ttf" id="2_jvr5g"]
+
+[node name="Main" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_n2c0l")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -9.5
+offset_right = 576.0
+offset_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_jvr5g")
+text = "Character name"
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 35)
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../../CreateButton")
+
+[node name="CreateButton" type="Button" parent="."]
+process_mode = 3
+custom_minimum_size = Vector2(60, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -41.0
+offset_top = -271.0
+offset_right = 59.0
+offset_bottom = -241.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_neighbor_top = NodePath("../HBoxContainer/TextEdit")
+theme_override_fonts/font = ExtResource("2_jvr5g")
+text = "Create"
+
+[connection signal="pressed" from="CreateButton" to="." method="_on_create_button_pressed"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=7 format=3 uid="uid://dww5wwd7qde02"]
+
+[ext_resource type="PackedScene" uid="uid://c1s5dlu8sauh7" path="res://shootemup/units/enemies/enemy.tscn" id="1_ymfwy"]
+[ext_resource type="PackedScene" uid="uid://bc8jg2l2amedy" path="res://shootemup/units/enemies/shapes/tracker_shape.tscn" id="2_6d101"]
+[ext_resource type="Script" uid="uid://5kjr6xok8mss" path="res://shootemup/units/enemies/tracker_enemy.gd" id="2_fc6xk"]
+[ext_resource type="PackedScene" uid="uid://dkrl3u8l5w70v" path="res://shootemup/units/enemies/ais/approach_ai.tscn" id="3_2qlx2"]
+[ext_resource type="PackedScene" uid="uid://du45mmje3rt74" path="res://shootemup/units/enemies/ais/track_ai.tscn" id="4_igypu"]
+[ext_resource type="PackedScene" uid="uid://cydmhxnjxwg2q" path="res://shootemup/units/enemies/weapons/rifle.tscn" id="5_mraej"]
+
+[node name="TrackerEnemy" instance=ExtResource("1_ymfwy")]
+script = ExtResource("2_fc6xk")
+
+[node name="TrackerShape" parent="." index="0" instance=ExtResource("2_6d101")]
+
+[node name="ApproachAI" parent="." index="1" instance=ExtResource("3_2qlx2")]
+
+[node name="TrackAI" parent="." index="2" instance=ExtResource("4_igypu")]
+
+[node name="Rifle" parent="." index="3" instance=ExtResource("5_mraej")]
+
+[connection signal="area_shape_entered" from="TrackerShape" to="." method="_on_area_shape_entered"]
+[connection signal="shoot" from="Rifle" to="." method="_on_weapon_shoot"]

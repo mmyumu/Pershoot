@@ -1,0 +1,17 @@
+[gd_scene load_steps=6 format=3 uid="uid://b465uy2qffjq7"]
+
+[ext_resource type="Script" uid="uid://du5xfvfwax8s6" path="res://shootemup/levels/scenarios/scenario_debug.gd" id="1_klg3f"]
+[ext_resource type="PackedScene" uid="uid://vtfrt2arq76r" path="res://shootemup/levels/spawners/spawner.tscn" id="2_f04cl"]
+[ext_resource type="PackedScene" uid="uid://16f74as41n6i" path="res://shootemup/units/enemies/fighter_enemy.tscn" id="3_aaof8"]
+[ext_resource type="PackedScene" uid="uid://ctcqt23i86kfk" path="res://shootemup/units/enemies/burst_fighter_enemy.tscn" id="4_etyhk"]
+[ext_resource type="PackedScene" uid="uid://yj50gy0yj403" path="res://shootemup/levels/spawners/single_spawner_behavior.tscn" id="5_ba7kh"]
+
+[node name="Scenario01" type="Node2D"]
+script = ExtResource("1_klg3f")
+
+[node name="FighterSpawnerRight" parent="." instance=ExtResource("2_f04cl")]
+position = Vector2(1312, -100)
+polygon = PackedVector2Array(0, -4, 100, -4, 100, 100, 0, 100)
+enemies_scenes = Array[PackedScene]([ExtResource("3_aaof8"), ExtResource("4_etyhk")])
+
+[node name="SingleSpawnerBehavior" parent="FighterSpawnerRight" instance=ExtResource("5_ba7kh")]

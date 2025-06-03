@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://du45mmje3rt74"]
+
+[ext_resource type="Script" uid="uid://ny3wfqmutbfg" path="res://shootemup/units/enemies/ais/track_ai.gd" id="1_xvc8u"]
+
+[node name="TrackAI" type="Node2D"]
+script = ExtResource("1_xvc8u")

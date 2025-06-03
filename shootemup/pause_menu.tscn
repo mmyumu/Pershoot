@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3wmm4jquwoh7"]
+
+[ext_resource type="FontFile" uid="uid://rok3l0s3axtu" path="res://fonts/ka1.ttf" id="1_k8qi1"]
+[ext_resource type="Script" uid="uid://bwmrb1blix6v2" path="res://shootemup/pause_menu.gd" id="1_otuif"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_otuif")
+
+[node name="PauseMessage" type="Node" parent="."]
+
+[node name="PauseLabel" type="Label" parent="PauseMessage"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -110.0
+offset_right = 140.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_k8qi1")
+theme_override_font_sizes/font_size = 64
+text = "Pause"
+
+[node name="ResumeLabel" type="Label" parent="PauseMessage"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -196.5
+offset_top = 10.0
+offset_right = 196.5
+offset_bottom = 41.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_k8qi1")
+theme_override_font_sizes/font_size = 24
+text = "Press start to resume"

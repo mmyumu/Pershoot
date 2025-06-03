@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmq7mxulsiifi"]
+
+[ext_resource type="FontFile" uid="uid://rok3l0s3axtu" path="res://fonts/ka1.ttf" id="1_13ykg"]
+[ext_resource type="Script" path="res://game_slots/game_slot.gd" id="1_h4op5"]
+[ext_resource type="PackedScene" uid="uid://xeoum148lv7u" path="res://util/confirm_dialog.tscn" id="3_teo26"]
+
+[node name="GameSlot" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_h4op5")
+
+[node name="EmptySlot" type="Button" parent="."]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="EmptySlot"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 22.0
+
+[node name="Label" type="Label" parent="EmptySlot/CenterContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_13ykg")
+text = "Empty"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Slot" type="Button" parent="."]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Slot"]
+layout_mode = 0
+offset_right = 222.0
+offset_bottom = 58.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Slot/MarginContainer"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Slot/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_13ykg")
+text = "Game name"
+
+[node name="Date" type="Label" parent="Slot/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_13ykg")
+text = "2023-11-30 12:00:00"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="Erase" type="Button" parent="CenterContainer"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_13ykg")
+text = "Erase game"
+
+[node name="ConfirmDialog" parent="." instance=ExtResource("3_teo26")]
+title = "Confirm erase data"
+visible = false
+
+[connection signal="pressed" from="EmptySlot" to="." method="_on_empty_slot_pressed"]
+[connection signal="pressed" from="Slot" to="." method="_on_slot_pressed"]
+[connection signal="pressed" from="CenterContainer/Erase" to="." method="_on_erase_pressed"]
+[connection signal="canceled" from="ConfirmDialog" to="." method="_on_confirm_dialog_canceled"]
+[connection signal="confirmed" from="ConfirmDialog" to="." method="_on_confirm_dialog_confirmed"]

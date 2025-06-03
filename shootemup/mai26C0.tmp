@@ -1,0 +1,33 @@
+[gd_scene load_steps=11 format=3 uid="uid://blbpq1q6ur422"]
+
+[ext_resource type="PackedScene" uid="uid://xsyxsqvbvltk" path="res://shootemup/units/player/player.tscn" id="1_gy300"]
+[ext_resource type="Script" path="res://shootemup/main.gd" id="1_holjf"]
+[ext_resource type="Texture2D" uid="uid://bn4ciy13fval0" path="res://art/background_grass.png" id="2_sjmuw"]
+[ext_resource type="PackedScene" uid="uid://dpq0h6783ujor" path="res://shootemup/levels/scenarios/scenario01.tscn" id="2_vpnx0"]
+[ext_resource type="Texture2D" uid="uid://dr2pajd00m1cn" path="res://art/background_grass2.png" id="3_bno3j"]
+[ext_resource type="PackedScene" uid="uid://c3wmm4jquwoh7" path="res://shootemup/pause_menu.tscn" id="3_wa4c2"]
+[ext_resource type="PackedScene" uid="uid://csrjim7erxwl" path="res://shootemup/hud.tscn" id="4_e8epp"]
+[ext_resource type="Texture2D" uid="uid://b12fowm7h1f8h" path="res://art/background_grass3.png" id="4_h7v4i"]
+[ext_resource type="PackedScene" uid="uid://cq46u763dl11o" path="res://shootemup/levels/level.tscn" id="5_arfcs"]
+[ext_resource type="PackedScene" uid="uid://dg34dgskstb4u" path="res://shootemup/levels/background.tscn" id="6_lmocs"]
+
+[node name="MainStage" type="Node"]
+process_mode = 1
+script = ExtResource("1_holjf")
+scenario_scenes = Array[PackedScene]([ExtResource("2_vpnx0")])
+background_textures = Array[Texture]([ExtResource("2_sjmuw"), ExtResource("3_bno3j"), ExtResource("4_h7v4i")])
+
+[node name="Player" parent="." instance=ExtResource("1_gy300")]
+position = Vector2(640, 576)
+
+[node name="PauseMenu" parent="." instance=ExtResource("3_wa4c2")]
+
+[node name="HUD" parent="." instance=ExtResource("4_e8epp")]
+
+[node name="Level" parent="." instance=ExtResource("5_arfcs")]
+
+[node name="Background" parent="Level" instance=ExtResource("6_lmocs")]
+speed = 400.0
+
+[connection signal="start_play" from="HUD" to="." method="_on_hud_start_play"]
+[connection signal="enemy_spawned" from="Level" to="." method="_on_enemy_spawned"]

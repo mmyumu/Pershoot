@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://blbpq1q6ur422"]
+
+[ext_resource type="PackedScene" uid="uid://xsyxsqvbvltk" path="res://shootemup/units/player/player.tscn" id="1_gy300"]
+[ext_resource type="Script" path="res://shootemup/main.gd" id="1_holjf"]
+[ext_resource type="PackedScene" uid="uid://c3wmm4jquwoh7" path="res://shootemup/pause_menu.tscn" id="3_wa4c2"]
+[ext_resource type="PackedScene" uid="uid://csrjim7erxwl" path="res://shootemup/hud.tscn" id="4_e8epp"]
+[ext_resource type="PackedScene" uid="uid://ce0vn8j4kxt0b" path="res://shootemup/levels/level.tscn" id="5_y4xxv"]
+
+[node name="MainStage" type="Node"]
+process_mode = 1
+script = ExtResource("1_holjf")
+
+[node name="Player" parent="." instance=ExtResource("1_gy300")]
+position = Vector2(640, 576)
+
+[node name="PauseMenu" parent="." instance=ExtResource("3_wa4c2")]
+
+[node name="HUD" parent="." instance=ExtResource("4_e8epp")]
+
+[node name="Level" parent="." instance=ExtResource("5_y4xxv")]
+
+[connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
+[connection signal="player_hit" from="Player" to="." method="_on_player_player_hit"]
+[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
+[connection signal="start_play" from="HUD" to="." method="_on_hud_start_play"]

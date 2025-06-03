@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dg34dgskstb4u"]
+
+[ext_resource type="Script" uid="uid://c74yk8uyir25d" path="res://shootemup/levels/background.gd" id="1_c6vpq"]
+[ext_resource type="Texture2D" uid="uid://bn4ciy13fval0" path="res://art/background_grass.png" id="2_g4dta"]
+
+[node name="Background" type="ParallaxBackground"]
+script = ExtResource("1_c6vpq")
+texture = ExtResource("2_g4dta")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+motion_mirroring = Vector2(0, 720)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxLayer"]
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("2_g4dta")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1280, 720)

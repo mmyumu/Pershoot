@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://ctcqt23i86kfk"]
+
+[ext_resource type="PackedScene" uid="uid://c1s5dlu8sauh7" path="res://shootemup/units/enemies/enemy.tscn" id="1_8o7mw"]
+[ext_resource type="PackedScene" uid="uid://1bw4upgotwrp" path="res://shootemup/units/enemies/shapes/fighter_shape.tscn" id="2_1vgpj"]
+[ext_resource type="Script" uid="uid://c0657oq4x4jq6" path="res://shootemup/units/enemies/burst_fighter_enemy.gd" id="2_p02v0"]
+[ext_resource type="PackedScene" uid="uid://dkrl3u8l5w70v" path="res://shootemup/units/enemies/ais/approach_ai.tscn" id="2_p3e4u"]
+[ext_resource type="PackedScene" uid="uid://chsflmhi2mt82" path="res://shootemup/units/enemies/weapons/burst_rifle.tscn" id="3_186dc"]
+
+[node name="BurstFighterEnemy" instance=ExtResource("1_8o7mw")]
+script = ExtResource("2_p02v0")
+
+[node name="FighterShape" parent="." index="0" instance=ExtResource("2_1vgpj")]
+
+[node name="ApproachAI" parent="." index="1" instance=ExtResource("2_p3e4u")]
+
+[node name="BurstRifle" parent="." index="2" instance=ExtResource("3_186dc")]
+
+[connection signal="area_shape_entered" from="FighterShape" to="." method="_on_area_shape_entered"]
+[connection signal="shoot" from="BurstRifle" to="." method="_on_weapon_shoot"]

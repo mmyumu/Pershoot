@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjoccyfcff2jx"]
+
+[ext_resource type="PackedScene" uid="uid://eoyctovw0etd" path="res://shootemup/units/projectiles/bullet.tscn" id="1_g8xv3"]
+
+[node name="Projectile" instance=ExtResource("1_g8xv3")]
+damage = 5
+speed = 800

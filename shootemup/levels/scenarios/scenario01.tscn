@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://dpq0h6783ujor"]
+
+[ext_resource type="Script" uid="uid://bxmg0yklri8sq" path="res://shootemup/levels/scenarios/scenario01.gd" id="1_jdo17"]
+[ext_resource type="PackedScene" uid="uid://vtfrt2arq76r" path="res://shootemup/levels/spawners/spawner.tscn" id="2_7i6sp"]
+[ext_resource type="PackedScene" uid="uid://yj50gy0yj403" path="res://shootemup/levels/spawners/single_spawner_behavior.tscn" id="5_475qe"]
+[ext_resource type="PackedScene" uid="uid://16f74as41n6i" path="res://shootemup/units/enemies/fighter_enemy.tscn" id="6_87dce"]
+[ext_resource type="PackedScene" uid="uid://0lrm5ip1b7ql" path="res://shootemup/levels/spawners/wave_spawner_behavior.tscn" id="6_vbkvr"]
+[ext_resource type="PackedScene" uid="uid://ctcqt23i86kfk" path="res://shootemup/units/enemies/burst_fighter_enemy.tscn" id="7_jtggt"]
+
+[node name="Scenario01" type="Node2D"]
+script = ExtResource("1_jdo17")
+
+[node name="FighterSpawnerRight" parent="." instance=ExtResource("2_7i6sp")]
+position = Vector2(1312, -100)
+polygon = PackedVector2Array(0, -4, 100, -4, 100, 100, 0, 100)
+enemies_scenes = Array[PackedScene]([ExtResource("6_87dce"), ExtResource("7_jtggt")])
+
+[node name="SingleSpawnerBehavior" parent="FighterSpawnerRight" instance=ExtResource("5_475qe")]
+spawn_count = 20
+
+[node name="FighterSpawnerLeft" parent="." instance=ExtResource("2_7i6sp")]
+position = Vector2(-132, -100)
+polygon = PackedVector2Array(0, -4, 100, -4, 100, 100, 0, 100)
+enemies_scenes = Array[PackedScene]([ExtResource("6_87dce"), ExtResource("7_jtggt")])
+
+[node name="SingleSpawnerBehavior" parent="FighterSpawnerLeft" instance=ExtResource("5_475qe")]
+spawn_count = 20
+
+[node name="FighterSpawnerTop" parent="." instance=ExtResource("2_7i6sp")]
+position = Vector2(0, -48)
+enemies_scenes = Array[PackedScene]([ExtResource("6_87dce"), ExtResource("7_jtggt")])
+
+[node name="WaveSpawnerBehavior" parent="FighterSpawnerTop" instance=ExtResource("6_vbkvr")]
+spawn_period = 3.0
+wave_count = 6
+wave_size = 4
+instant_spawn = true
+x_offset = 100

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://0lrm5ip1b7ql"]
+
+[ext_resource type="Script" uid="uid://coh0878ekfmuv" path="res://shootemup/levels/spawners/wave_spawner_behavior.gd" id="1_q6xbf"]
+[ext_resource type="PackedScene" uid="uid://druq6y6ah7jbr" path="res://shootemup/util/boundaries_util.tscn" id="2_vksy4"]
+
+[node name="WaveSpawnerBehavior" type="Node2D" groups=["Behavior"]]
+script = ExtResource("1_q6xbf")
+
+[node name="SpawnTimer" type="Timer" parent="."]
+
+[node name="BoundariesUtil" parent="." instance=ExtResource("2_vksy4")]
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

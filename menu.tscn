@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7ipojc8c1vac"]
+
+[ext_resource type="FontFile" uid="uid://rok3l0s3axtu" path="res://fonts/ka1.ttf" id="1_bqasl"]
+[ext_resource type="Script" uid="uid://gj1r06ihvwu0" path="res://menu.gd" id="1_ktgn5"]
+
+[node name="Menu" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_ktgn5")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -158.5
+offset_top = 150.0
+offset_right = 158.5
+offset_bottom = 225.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_bqasl")
+theme_override_font_sizes/font_size = 76
+text = "Un Flying OVNI"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -400.0
+offset_right = 200.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(340, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_bqasl")
+theme_override_font_sizes/font_size = 44
+text = "Start"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(340, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("1_bqasl")
+theme_override_font_sizes/font_size = 44
+text = "Quit"
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

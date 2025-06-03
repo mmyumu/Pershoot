@@ -1,0 +1,139 @@
+[gd_scene load_steps=4 format=3 uid="uid://csrjim7erxwl"]
+
+[ext_resource type="FontFile" uid="uid://rok3l0s3axtu" path="res://fonts/ka1.ttf" id="1_04pe5"]
+[ext_resource type="Script" uid="uid://cxq6ua7wb8c30" path="res://shootemup/hud.gd" id="1_6pjce"]
+
+[sub_resource type="GDScript" id="GDScript_b8lme"]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass
+#	print(GlobalVariables.input_type)
+#	var input_events = InputMap.action_get_events(\"start_play\")
+#	for input_event in input_events:
+#		if input_event is InputEventJoypadButton:
+#			print(input_event)
+			
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+	pass
+"
+
+[node name="HUD" type="CanvasLayer"]
+process_mode = 2
+script = ExtResource("1_6pjce")
+
+[node name="HP" type="Node" parent="."]
+
+[node name="HPLabel" type="Label" parent="HP"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -45.0
+offset_right = 81.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_04pe5")
+theme_override_font_sizes/font_size = 32
+text = "0"
+horizontal_alignment = 2
+
+[node name="HPSeparatorLabel" type="Label" parent="HP"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 95.0
+offset_top = -55.0
+offset_right = 115.0
+offset_bottom = 3.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 40
+text = "/"
+
+[node name="MaxHPLabel" type="Label" parent="HP"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = -45.0
+offset_right = 201.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_04pe5")
+theme_override_font_sizes/font_size = 32
+text = "0
+"
+
+[node name="StartPlay" type="Node" parent="."]
+
+[node name="StartLabel" type="Label" parent="StartPlay"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.5
+offset_top = -11.5
+offset_right = 115.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_04pe5")
+theme_override_font_sizes/font_size = 64
+text = "Time left"
+horizontal_alignment = 1
+script = SubResource("GDScript_b8lme")
+
+[node name="StartTimer" type="Timer" parent="StartPlay"]
+one_shot = true
+
+[node name="GameOverLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_04pe5")
+theme_override_font_sizes/font_size = 64
+text = "game over"
+
+[node name="StageCompletedLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_04pe5")
+theme_override_font_sizes/font_size = 64
+text = "Stage completed"
+
+[node name="Money" type="Label" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -36.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_04pe5")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 2
+
+[connection signal="timeout" from="StartPlay/StartTimer" to="." method="_on_start_timer_timeout"]

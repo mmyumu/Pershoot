@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://eoyctovw0etd"]
+
+[ext_resource type="Script" uid="uid://c0jn8n4m0objg" path="res://shootemup/units/projectiles/bullet.gd" id="1_aasoj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l08y2"]
+size = Vector2(4, 10)
+
+[node name="Projectile" type="Area2D" groups=["Projectile"]]
+position = Vector2(567, 325)
+script = ExtResource("1_aasoj")
+speed = 200
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_l08y2")
+
+[node name="ProjectileShape" type="Polygon2D" parent="."]
+position = Vector2(5.96046e-08, -3.57628e-07)
+scale = Vector2(0.125, 0.3125)
+color = Color(0.968627, 1, 0, 0.392157)
+polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

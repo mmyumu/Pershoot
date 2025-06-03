@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://16f74as41n6i"]
+
+[ext_resource type="PackedScene" uid="uid://c1s5dlu8sauh7" path="res://shootemup/units/enemies/enemy.tscn" id="1_eu1qf"]
+[ext_resource type="Script" uid="uid://cahtm2lyommjq" path="res://shootemup/units/enemies/fighter_enemy.gd" id="2_47j5g"]
+[ext_resource type="PackedScene" uid="uid://cydmhxnjxwg2q" path="res://shootemup/units/enemies/weapons/rifle.tscn" id="2_130oj"]
+[ext_resource type="PackedScene" uid="uid://1bw4upgotwrp" path="res://shootemup/units/enemies/shapes/fighter_shape.tscn" id="2_wx01k"]
+[ext_resource type="PackedScene" uid="uid://dkrl3u8l5w70v" path="res://shootemup/units/enemies/ais/approach_ai.tscn" id="4_0cbw3"]
+
+[node name="FighterEnemy" instance=ExtResource("1_eu1qf")]
+script = ExtResource("2_47j5g")
+
+[node name="FighterShape" parent="." index="0" instance=ExtResource("2_wx01k")]
+
+[node name="ApproachAI" parent="." index="1" instance=ExtResource("4_0cbw3")]
+
+[node name="Rifle" parent="." index="2" instance=ExtResource("2_130oj")]
+
+[connection signal="area_shape_entered" from="FighterShape" to="." method="_on_area_shape_entered"]
+[connection signal="shoot" from="Rifle" to="." method="_on_weapon_shoot"]
