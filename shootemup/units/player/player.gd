@@ -46,26 +46,50 @@ func _on_area_shape_entered(_area_rid, area, _area_shape_index, _local_shape_ind
 			game_over.emit()
 
 func draw_ship(ship: Ship) -> void:
-	# Supprimer les anciens modules affichés (nommés "drawn_x_y")
-	for child in get_children():
-		if child.name.begins_with("drawn_"):
-			child.queue_free()
+	const TILE_SIZE := 16
 
-	# Constante pour la taille d'un "pixel" (module)
-	var tile_size := 16
-	var offset := Vector2(-ship.width / 2.0 * tile_size, -ship.height / 2.0 * tile_size)
+	# Remove existing ship visuals
+	if has_node("DrawnShip"):
+		get_node("DrawnShip").queue_free()
+
+	# Create container for visuals and hitboxes
+	var drawn_root := Node2D.new()
+	drawn_root.name = "DrawnShip"
+	add_child(drawn_root)
+
+	var offset := Vector2(-ship.width / 2.0 * TILE_SIZE, -ship.height / 2.0 * TILE_SIZE)
+
+	# Create hitbox area and apply global offset
+	var hitbox := Area2D.new()
+	hitbox.name = "ShipHitbox"
+	hitbox.position = offset
+	hitbox.add_to_group("Player")
+	drawn_root.add_child(hitbox)
+
+	# Connect signal to damage handler
+	hitbox.area_shape_entered.connect(_on_area_shape_entered.bind())
 
 	for y in range(ship.height):
 		for x in range(ship.width):
-			var module_type = ship.get_ship_module(x, y)
+			var module_type := ship.get_ship_module(x, y)
 			if module_type == ShipModule.Type.EMPTY:
 				continue
 
+			# Create visual tile
 			var color := ShipModule.get_color(module_type)
+			var module_rect := ColorRect.new()
+			module_rect.color = color
+			module_rect.size = Vector2(TILE_SIZE, TILE_SIZE)
+			module_rect.position = Vector2(x, y) * TILE_SIZE + offset
+			module_rect.name = "drawn_%d_%d" % [x, y]
+			drawn_root.add_child(module_rect)
 
-			var rect := ColorRect.new()
-			rect.color = color
-			rect.size = Vector2(tile_size, tile_size)
-			rect.position = Vector2(x, y) * tile_size + offset
-			rect.name = "drawn_%d_%d" % [x, y]
-			add_child(rect)
+			# Create collision shape
+			var shape := RectangleShape2D.new()
+			shape.size = Vector2(TILE_SIZE, TILE_SIZE)
+
+			var shape_node := CollisionShape2D.new()
+			shape_node.shape = shape
+			# Center the shape properly
+			shape_node.position = Vector2(x, y) * TILE_SIZE + Vector2(TILE_SIZE, TILE_SIZE) / 2
+			hitbox.add_child(shape_node)

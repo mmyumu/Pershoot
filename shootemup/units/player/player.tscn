@@ -1,23 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://xsyxsqvbvltk"]
+[gd_scene load_steps=3 format=3 uid="uid://xsyxsqvbvltk"]
 
 [ext_resource type="Script" uid="uid://d4jxol48adcwk" path="res://shootemup/units/player/player.gd" id="1_nraj3"]
 [ext_resource type="PackedScene" uid="uid://1ulstek31iwg" path="res://shootemup/units/player/turret.tscn" id="2_3iwk2"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ljunf"]
-size = Vector2(16, 64)
-
 [node name="Player" type="Area2D" groups=["Player"]]
 script = ExtResource("1_nraj3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ljunf")
-
 [node name="Turret" parent="." instance=ExtResource("2_3iwk2")]
 fire_rate = 20.0
-
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(0.183333, 1, 0, 0.392157)
-polygon = PackedVector2Array(-8, 24, -16, 32, 16, 32, 8, 24, 8, 16, 32, 16, 32, 8, 8, -8, 8, -16, 16, -16, 8, -24, 8, -32, 0, -40, -8, -32, -8, -24, -16, -16, -8, -16, -8, -8, -32, 8, -32, 16, -8, 16)
 
 [connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
