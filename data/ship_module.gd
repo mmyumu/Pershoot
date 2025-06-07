@@ -16,7 +16,7 @@ static func get_name(t: Type) -> String:
 
 static func get_color(t: Type) -> Color:
 	match t:
-		Type.COCKPIT: return Color.DARK_GRAY
+		Type.COCKPIT: return Color.LIGHT_GRAY
 		Type.WING: return Color.CYAN
 		Type.ENGINE: return Color.ORANGE
 		_: return Color.DARK_SLATE_GRAY

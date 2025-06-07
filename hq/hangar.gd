@@ -1,15 +1,68 @@
 extends Control
 
-@onready var ship_grid = $HBoxContainer/GridContainer
-@onready var buttons_container = $HBoxContainer/VBoxContainer
+@onready var ship_grid = $VBoxContainer/HBoxContainer/GridContainer
+@onready var buttons_container = $VBoxContainer/HBoxContainer/VBoxContainer
 var selected_ship_module_type: ShipModule.Type
 var hovered_cell = null
+var focused_ship_module = null
+var grid_buttons: Array = []
+var ship: Ship = null
 
 func _ready():
-	ship_grid.columns = max(1, Saver.data.ship.width)
+	#print("🏁 Hangar ready")
+	#print("Script instance:", self)
+	#print("Ship instance in Saver:", Saver.data.ship)
+	#print("Is save button valid?", $VBoxContainer/HBoxContainer2/SaveButton != null)
+	#print("Connecting SaveButton manually")
+	#$VBoxContainer/HBoxContainer2/SaveButton.pressed.connect(func(): print("✅ Save button clicked"))
+	
+	ship = Saver.data.ship.clone()
+	
+	ship_grid.columns = max(1, ship.width)
+	create_grid_buttons()
 	create_ship_modules_buttons()
-	if Saver.data.ship != null:
-		draw_plane()
+	
+	#print("Save button:", $VBoxContainer/HBoxContainer2/SaveButton)
+	#print("Cancel button:", $VBoxContainer/HBoxContainer2/CancelButton)
+	
+	draw_plane()
+	buttons_container.get_child(0).grab_focus()
+
+func create_grid_buttons():
+	grid_buttons.clear()
+	for y in range(ship.height):
+		var row: Array = []
+		for x in range(ship.width):
+			var btn = Button.new()
+			btn.focus_mode = Control.FOCUS_ALL
+			btn.custom_minimum_size = Vector2(16, 16)
+			btn.text = ""
+			
+			var style = StyleBoxFlat.new()
+			style.bg_color = Color(1, 1, 1, 1)
+
+			btn.add_theme_stylebox_override("normal", style)
+			btn.add_theme_stylebox_override("pressed", style)
+
+			var style_hover = StyleBoxFlat.new()
+			style_hover.bg_color = Color(1, 1, 1, 1)
+			style_hover.border_width_bottom = 1
+			style_hover.border_width_top = 1
+			style_hover.border_width_left = 1
+			style_hover.border_width_right = 1
+			style_hover.border_color = Color.DARK_ORANGE
+			btn.add_theme_stylebox_override("hover", style_hover)
+			btn.add_theme_stylebox_override("focus", style_hover)
+			
+			btn.connect("gui_input", func(event): _on_cell_input(event, x, y))
+			btn.connect("focus_exited", func(): hovered_cell = null; draw_plane())
+			btn.connect("focus_entered", func(): hovered_cell = Vector2i(x, y); draw_plane())
+			btn.connect("mouse_exited", func(): hovered_cell = null; draw_plane())
+			btn.connect("mouse_entered", func(): hovered_cell = Vector2i(x, y); draw_plane())
+			
+			ship_grid.add_child(btn)
+			row.append(btn)
+		grid_buttons.append(row)
 
 
 func create_ship_modules_buttons():
@@ -26,24 +79,18 @@ func select_module(ship_module_type: int):
 
 
 func draw_plane():
-	for child in ship_grid.get_children():
-		child.queue_free()
-	for y in range(Saver.data.ship.height):
-		for x in range(Saver.data.ship.width):
-			var ship_module_type = Saver.data.ship.get_ship_module(x, y)
-			var cell = ColorRect.new()
-			if hovered_cell != null and hovered_cell == Vector2i(x, y):
-				var base_color = ShipModule.get_color(selected_ship_module_type)
-				base_color.a = 0.4
-				cell.color = base_color
+	var focused_position = null
+	for y in range(ship.height):
+		for x in range(ship.width):
+			var ship_module_type = ship.get_ship_module(x, y)
+			var btn = grid_buttons[y][x]
+
+			if hovered_cell == Vector2i(x, y) and ship_module_type == ShipModule.Type.EMPTY:
+				var ghost_color = ShipModule.get_color(selected_ship_module_type)
+				ghost_color.a = 0.4
+				btn.modulate = ghost_color
 			else:
-				cell.color = ShipModule.get_color(ship_module_type)
-
-			cell.custom_minimum_size = Vector2(16, 16)
-			cell.mouse_filter = Control.MOUSE_FILTER_PASS
-			cell.connect("gui_input", Callable(self, "_on_cell_input").bind(x, y))
-			ship_grid.add_child(cell)
-
+				btn.modulate = ShipModule.get_color(ship_module_type)
 
 func _on_cell_input(event: InputEvent, x: int, y: int):
 	if event is InputEventMouseMotion:
@@ -54,33 +101,25 @@ func _on_cell_input(event: InputEvent, x: int, y: int):
 	elif event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if is_valid_placement(x, y, selected_ship_module_type):
-				Saver.data.ship.set_ship_module(x, y, selected_ship_module_type)
+				ship.set_ship_module(x, y, selected_ship_module_type)
 			else:
 				invalid_placement_highlight()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if is_valid_placement(x, y, ShipModule.Type.EMPTY):
-				Saver.data.ship.set_ship_module(x, y, ShipModule.Type.EMPTY)
+				ship.set_ship_module(x, y, ShipModule.Type.EMPTY)
 			else:
 				invalid_placement_highlight()
+	elif event.is_action_pressed("ui_accept"):
+		if is_valid_placement(x, y, selected_ship_module_type):
+			ship.set_ship_module(x, y, selected_ship_module_type)
+		else:
+			invalid_placement_highlight()
+	elif event.is_action_pressed("ui_cancel"):
+		if is_valid_placement(x, y, ShipModule.Type.EMPTY):
+			ship.set_ship_module(x, y, ShipModule.Type.EMPTY)
+		else:
+			invalid_placement_highlight()
 		draw_plane()
-
-
-func get_color_from_type(t: ShipModule.Type) -> Color:
-	match t:
-		"cockpit":
-			return Color.DARK_GRAY
-		"wing":
-			return Color.CYAN
-		"engine":
-			return Color.ORANGE
-		_:
-			return Color.TRANSPARENT
-
-
-func _on_grid_container_mouse_exited() -> void:
-	hovered_cell = null
-	draw_plane()
-
 
 func is_valid_placement(x: int, y: int, ship_module_type: ShipModule.Type) -> bool:
 	if ship_module_type == ShipModule.Type.EMPTY:
@@ -92,19 +131,17 @@ func is_valid_placement(x: int, y: int, ship_module_type: ShipModule.Type) -> bo
 			&& check_in_bounds(x, y) \
 			&& check_neighbours(x, y)
 
-
 func check_cockpit(x: int, y: int, ship_module_type: ShipModule.Type) -> bool:
 	if ship_module_type == ShipModule.Type.COCKPIT:
 		return not has_cockpit()
 	elif ship_module_type == ShipModule.Type.EMPTY:
-		var clicked_ship_module = Saver.data.ship.get_ship_module(x, y)
+		var clicked_ship_module = ship.get_ship_module(x, y)
 		if clicked_ship_module == ShipModule.Type.COCKPIT:
 			return false
 	return true
 
-
 func check_in_bounds(x: int, y: int) -> bool:
-	if x < 0 or y < 0 or x >= Saver.data.ship.width or y >= Saver.data.ship.height:
+	if x < 0 or y < 0 or x >= ship.width or y >= ship.height:
 		return false
 	return true
 
@@ -112,33 +149,33 @@ func check_neighbours(x: int, y: int) -> bool:
 	var dirs = [Vector2i(1,0), Vector2i(-1,0), Vector2i(0,1), Vector2i(0,-1)]
 	for d in dirs:
 		var neighbor = Vector2i(x, y) + d
-		var neighbor_type = Saver.data.ship.get_ship_module(neighbor.x, neighbor.y)
+		var neighbor_type = ship.get_ship_module(neighbor.x, neighbor.y)
 		if neighbor_type != ShipModule.Type.EMPTY:
 			return true
 	return false
 
 func has_cockpit() -> bool:
-	for y in range(Saver.data.ship.height):
-		for x in range(Saver.data.ship.width):
-			if Saver.data.ship.get_ship_module(x, y) == ShipModule.Type.COCKPIT:
+	for y in range(ship.height):
+		for x in range(ship.width):
+			if ship.get_ship_module(x, y) == ShipModule.Type.COCKPIT:
 				return true
 	return false
 
 func check_preserves_connectivity(x: int, y: int) -> bool:
-	var width = Saver.data.ship.width
-	var height = Saver.data.ship.height
+	var width = ship.width
+	var height = ship.height
 
-	# Clone actuel du vaisseau
+	# Clone of actual ship
 	var grid = []
 	for j in range(height):
 		grid.append([])
 		for i in range(width):
-			grid[j].append(Saver.data.ship.get_ship_module(i, j))
+			grid[j].append(ship.get_ship_module(i, j))
 
-	# Suppression virtuelle
+	# Virtual removal
 	grid[y][x] = ShipModule.Type.EMPTY
 
-	# Trouver un module de départ
+	# Find starting module
 	var visited = {}
 	var start: Vector2i = Vector2i(-1, -1)
 	for j in range(height):
@@ -149,11 +186,11 @@ func check_preserves_connectivity(x: int, y: int) -> bool:
 		if start.x != -1:
 			break
 
-	# Si plus aucun module : ok
+	# If no  ship module anymore : ok
 	if start.x == -1:
 		return true
 
-	# BFS pour vérifier la connectivité
+	# BFS to check connectivity
 	var queue = [start]
 	visited[start] = true
 	var count = 1
@@ -177,9 +214,23 @@ func check_preserves_connectivity(x: int, y: int) -> bool:
 
 	return count == total_modules
 
-
 func invalid_placement_highlight():
+	print("invalid")
 	pass
 	#var tween = create_tween()
 	#tween.tween_property(, "outline_color", Color.DARK_RED, 0.2)
-		
+
+
+func _on_save_button_pressed() -> void:
+	Saver.data.ship = ship
+	Saver.save_data()
+	get_tree().change_scene_to_file("res://hq/main.tscn")
+
+
+
+func _on_cancel_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://hq/main.tscn")
+
+
+func _on_test_button_pressed() -> void:
+	print("TEST CLIC")

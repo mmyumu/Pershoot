@@ -14,6 +14,7 @@ func _init():
 		root_folder + "save2.res"
 	]
 	data = Data.new()
+	data.manual_initialize()
 
 func get_number_of_slots():
 	return len(slots)
@@ -34,6 +35,7 @@ func load_data():
 
 func reset_data():
 	data = Data.new()
+	data.manual_initialize()
 
 func get_data(index) -> Data:
 	if index >= 0 and index < len(slots):
@@ -48,7 +50,7 @@ func erase_data(index):
 			dir.remove(slots[index])
 			print("%s removed" % slots[index])
 
-func save_data_to_filename(data_to_save, filename):
+func save_data_to_filename(data_to_save: Data, filename):
 	print("Saving data to %s" % filename)
 	var result = ResourceSaver.save(data_to_save, filename)
 	assert(result == OK)
